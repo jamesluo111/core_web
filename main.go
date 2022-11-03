@@ -3,12 +3,14 @@ package main
 import (
 	"encoding/json"
 	"jamesluo1/framework"
+	"jamesluo1/framework/middleware"
 	"net/http"
 	"strconv"
 )
 
 func main() {
 	core := framework.NewCore()
+	core.Use(middleware.Test1(), middleware.Test2())
 	registerRouter(core)
 	server := &http.Server{
 		Addr:    ":8888",
