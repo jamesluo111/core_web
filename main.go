@@ -10,6 +10,7 @@ import (
 
 func main() {
 	core := framework.NewCore()
+	core.Use(middleware.StatDuration(), middleware.Recovery())
 	core.Use(middleware.Test1(), middleware.Test2())
 	registerRouter(core)
 	server := &http.Server{

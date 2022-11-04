@@ -1,15 +1,16 @@
-package framework
+package middleware
 
 import (
 	"context"
 	"fmt"
+	"jamesluo1/framework"
 	"log"
 	"time"
 )
 
-func TimeoutHandler(fun ControllerHandler, d time.Duration) ControllerHandler {
+func TimeoutHandler(fun framework.ControllerHandler, d time.Duration) framework.ControllerHandler {
 	//使用函数回调
-	return func(c *Context) error {
+	return func(c *framework.Context) error {
 		finish := make(chan struct{}, 1)
 		panicChan := make(chan interface{}, 1)
 
@@ -17,7 +18,7 @@ func TimeoutHandler(fun ControllerHandler, d time.Duration) ControllerHandler {
 		durationCtx, cancel := context.WithTimeout(c.BaseContext(), d)
 		defer cancel()
 
-		c.request.WithContext(durationCtx)
+		//c.request.WithContext(durationCtx)
 
 		go func() {
 			defer func() {
@@ -34,12 +35,12 @@ func TimeoutHandler(fun ControllerHandler, d time.Duration) ControllerHandler {
 		select {
 		case p := <-panicChan:
 			log.Println(p)
-			c.response.WriteHeader(500)
+			//c.response.WriteHeader(500)
 		case <-finish:
 			fmt.Println("finish")
 		case <-durationCtx.Done():
 			c.SetHasTimeout()
-			c.response.Write([]byte("time out"))
+			//c.response.Write([]byte("time out"))
 		}
 		return nil
 	}
