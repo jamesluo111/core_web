@@ -1,7 +1,6 @@
 package framework
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -55,12 +54,12 @@ func (c *Core) Group(prefix string) IGroup {
 	return NewGroup(c, prefix)
 }
 
-func (c *Core) FindRouteByRequest(request *http.Request) []ControllerHandler {
+func (c *Core) FindRouteNodeByRequest(request *http.Request) *node {
 	uri := request.URL.Path
 	method := request.Method
 	upperMethod := strings.ToUpper(method)
 	if methodHandler, ok := c.router[upperMethod]; ok {
-		return methodHandler.FindHandler(uri)
+		return methodHandler.root.matchNode(uri)
 	}
 	return nil
 }
@@ -68,14 +67,18 @@ func (c *Core) FindRouteByRequest(request *http.Request) []ControllerHandler {
 func (c *Core) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	log.Println("core.ServeHTTP")
 	ctx := NewContext(req, res)
-	fmt.Println(req.URL.Path)
-	handlers := c.FindRouteByRequest(req)
-	if handlers == nil {
+	//寻找路由
+	node := c.FindRouteNodeByRequest(req)
+	if node == nil {
 		ctx.Json(404, "not found")
 		return
 	}
 	//设置context中的handler字段
-	ctx.SetHandlers(handlers)
+	ctx.SetHandlers(node.handlers)
+
+	//设置路由参数
+	params := node.parseParamsFromEndNode(req.URL.Path)
+	ctx.SetParams(params)
 	log.Println("core.router")
 	if err := ctx.Next(); err != nil {
 		ctx.Json(500, "inner error")

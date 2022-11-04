@@ -1,6 +1,9 @@
 package main
 
-import "jamesluo1/framework"
+import (
+	"fmt"
+	"jamesluo1/framework"
+)
 
 func SubjectListController(ctx *framework.Context) error {
 	ctx.Json(200, "ok")
@@ -18,6 +21,8 @@ func SubjectUpdateController(ctx *framework.Context) error {
 }
 
 func SubjectGetController(ctx *framework.Context) error {
+	id, _ := ctx.ParamInt("id", 0)
+	fmt.Println(id)
 	ctx.Json(200, "ok")
 	return nil
 }
