@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+var _ IGroup = new(Core)
+
 type Core struct {
 	router      map[string]*Tree
 	middlewares []ControllerHandler // 从core这边设置的中间件
@@ -70,7 +72,7 @@ func (c *Core) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	//寻找路由
 	node := c.FindRouteNodeByRequest(req)
 	if node == nil {
-		ctx.Json(404, "not found")
+		ctx.SetStatus(400).Json("not found")
 		return
 	}
 	//设置context中的handler字段
@@ -81,7 +83,7 @@ func (c *Core) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	ctx.SetParams(params)
 	log.Println("core.router")
 	if err := ctx.Next(); err != nil {
-		ctx.Json(500, "inner error")
+		ctx.SetStatus(500).Json("inner error")
 		return
 	}
 }

@@ -5,6 +5,30 @@ import (
 )
 
 func UserLoginController(ctx *framework.Context) error {
-	ctx.Json(200, "登陆成功")
+	ctx.SetOkStatus().Json("登录成功")
+	return nil
+}
+
+type TodoPages struct {
+	PageTitle string
+	Todos     []Todo
+}
+
+type Todo struct {
+	Title string
+	Done  bool
+}
+
+func GetUserController(ctx *framework.Context) error {
+	data := TodoPages{
+		PageTitle: "My TODO list",
+		Todos: []Todo{
+			{Title: "Task 1", Done: false},
+			{Title: "Task 2", Done: true},
+			{Title: "Task 3", Done: true},
+		},
+	}
+	ctx.Html("public/user.html", "user.html", data)
+	ctx.SetOkStatus()
 	return nil
 }

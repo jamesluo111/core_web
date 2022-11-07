@@ -2,11 +2,13 @@ package framework
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"sync"
 	"time"
 )
+
+var _ IRequest = new(Context)
+var _ IRequest = new(Context)
 
 type Context struct {
 	request  *http.Request
@@ -83,21 +85,6 @@ func (ctx *Context) Next() error {
 			return err
 		}
 	}
-	return nil
-}
-
-func (ctx *Context) Json(status int, obj interface{}) error {
-	if ctx.hasTimeOut {
-		return nil
-	}
-	ctx.response.Header().Set("Content-Type", "application/json")
-	ctx.response.WriteHeader(status)
-	byt, err := json.Marshal(obj)
-	if err != nil {
-		ctx.response.WriteHeader(500)
-		return err
-	}
-	ctx.response.Write(byt)
 	return nil
 }
 
