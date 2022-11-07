@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"jamesluo1/framework"
-	"jamesluo1/framework/middleware"
+	"github.com/jamesluo111/core_web/framework/gin"
+	"github.com/jamesluo111/core_web/framework/middleware"
 	"log"
 	"net/http"
 	"os"
@@ -13,9 +13,9 @@ import (
 )
 
 func main() {
-	core := framework.NewCore()
-	core.Use(middleware.StatDuration(), middleware.Recovery())
-	core.Use(middleware.Test1(), middleware.Test2())
+	core := gin.New()
+	core.Use(gin.Recovery())
+	core.Use(middleware.Cost())
 	registerRouter(core)
 	server := &http.Server{
 		Addr:    ":8888",

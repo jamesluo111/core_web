@@ -1,8 +1,8 @@
 package main
 
 import (
-	"jamesluo1/framework"
-	"jamesluo1/framework/middleware"
+	"github.com/jamesluo111/core_web/framework"
+	"github.com/jamesluo111/core_web/framework/middleware"
 )
 
 func registerRouter(core *framework.Core) {

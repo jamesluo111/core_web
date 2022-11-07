@@ -1,12 +1,12 @@
 package main
 
 import (
-	"jamesluo1/framework"
+	"github.com/jamesluo111/core_web/framework/gin"
 	"time"
 )
 
-func UserLoginController(ctx *framework.Context) error {
-	ctx.SetOkStatus().Json("登录成功")
+func UserLoginController(ctx *gin.Context) error {
+	ctx.ISetOkStatus().IJson("登录成功")
 	return nil
 }
 
@@ -20,7 +20,7 @@ type Todo struct {
 	Done  bool
 }
 
-func GetUserController(ctx *framework.Context) error {
+func GetUserController(ctx *gin.Context) error {
 	data := TodoPages{
 		PageTitle: "My TODO list",
 		Todos: []Todo{
@@ -30,7 +30,7 @@ func GetUserController(ctx *framework.Context) error {
 		},
 	}
 	time.Sleep(10 * time.Second)
-	ctx.Html("public/user.html", "user.html", data)
-	ctx.SetOkStatus()
+	ctx.IHtml("public/user.html", "user.html", data)
+	ctx.ISetOkStatus()
 	return nil
 }

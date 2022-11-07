@@ -1,13 +1,13 @@
 package middleware
 
 import (
-	"jamesluo1/framework"
+	"github.com/jamesluo111/core_web/framework/gin"
 	"log"
 	"time"
 )
 
 //统计请求时长中间件
-func StatDuration() framework.ControllerHandler {
+func StatDuration() gin.HandlerFunc {
 	return func(c *framework.Context) error {
 		nowPre := time.Now()
 		c.Next()

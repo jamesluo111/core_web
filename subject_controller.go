@@ -2,27 +2,27 @@ package main
 
 import (
 	"fmt"
-	"jamesluo1/framework"
+	"github.com/jamesluo111/core_web/framework/gin"
 )
 
-func SubjectListController(ctx *framework.Context) error {
-	ctx.SetOkStatus().Json("ok")
+func SubjectListController(ctx *gin.Context) error {
+	ctx.ISetOkStatus().IJson("ok")
 	return nil
 }
 
-func SubjectDelController(ctx *framework.Context) error {
-	ctx.SetOkStatus().Json("ok")
+func SubjectDelController(ctx *gin.Context) error {
+	ctx.ISetOkStatus().IJson("ok")
 	return nil
 }
 
-func SubjectUpdateController(ctx *framework.Context) error {
-	ctx.SetOkStatus().Json("ok")
+func SubjectUpdateController(ctx *gin.Context) error {
+	ctx.ISetOkStatus().IJson("ok")
 	return nil
 }
 
-func SubjectGetController(ctx *framework.Context) error {
-	id, _ := ctx.ParamInt("id", 0)
+func SubjectGetController(ctx *gin.Context) error {
+	id, _ := ctx.DefaultParamInt64("id", 0)
 	fmt.Println(id)
-	ctx.SetOkStatus().Json("ok")
+	ctx.ISetOkStatus().IJson("ok")
 	return nil
 }
