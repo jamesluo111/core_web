@@ -1,11 +1,15 @@
 package main
 
 import (
-	"encoding/json"
+	"context"
 	"jamesluo1/framework"
 	"jamesluo1/framework/middleware"
+	"log"
 	"net/http"
-	"strconv"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 )
 
 func main() {
@@ -17,35 +21,20 @@ func main() {
 		Addr:    ":8888",
 		Handler: core,
 	}
-	server.ListenAndServe()
-}
+	go func() {
+		server.ListenAndServe()
+	}()
+	//当前的Goruoutine等待信号量
+	quit := make(chan os.Signal)
+	//监控信号：SIGINT, SIGTERM, SIGQUIT
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+	//这里会阻塞当前Goruoutine等待信号
+	<-quit
 
-type FooServer struct {
-}
-
-func (f FooServer) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	obj := map[string]interface{}{
-		"data": nil,
+	// 调用Server.Shutdown graceful结束
+	cxt, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	if err := server.Shutdown(cxt); err != nil {
+		log.Fatal("server shutdown：", err)
 	}
-	//设置控制器response的header
-	res.Header().Set("Content-Type", "application/json")
-	//从请求体中获取参数
-	foo := req.PostFormValue("foo")
-	if foo == "" {
-		foo = "10"
-	}
-	fooInt, err := strconv.Atoi(foo)
-	if err != nil {
-		res.WriteHeader(500)
-		return
-	}
-	obj["data"] = fooInt
-	byt, err := json.Marshal(obj)
-	if err != nil {
-		res.WriteHeader(500)
-		return
-	}
-	res.WriteHeader(200)
-	res.Write(byt)
-	return
+	defer cancel()
 }

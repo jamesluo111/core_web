@@ -2,6 +2,7 @@ package main
 
 import (
 	"jamesluo1/framework"
+	"time"
 )
 
 func UserLoginController(ctx *framework.Context) error {
@@ -28,6 +29,7 @@ func GetUserController(ctx *framework.Context) error {
 			{Title: "Task 3", Done: true},
 		},
 	}
+	time.Sleep(10 * time.Second)
 	ctx.Html("public/user.html", "user.html", data)
 	ctx.SetOkStatus()
 	return nil
