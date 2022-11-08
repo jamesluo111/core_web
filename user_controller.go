@@ -5,9 +5,9 @@ import (
 	"time"
 )
 
-func UserLoginController(ctx *gin.Context) error {
+func UserLoginController(ctx *gin.Context) {
 	ctx.ISetOkStatus().IJson("登录成功")
-	return nil
+	return
 }
 
 type TodoPages struct {
@@ -20,7 +20,7 @@ type Todo struct {
 	Done  bool
 }
 
-func GetUserController(ctx *gin.Context) error {
+func GetUserController(ctx *gin.Context) {
 	data := TodoPages{
 		PageTitle: "My TODO list",
 		Todos: []Todo{
@@ -32,5 +32,5 @@ func GetUserController(ctx *gin.Context) error {
 	time.Sleep(10 * time.Second)
 	ctx.IHtml("public/user.html", "user.html", data)
 	ctx.ISetOkStatus()
-	return nil
+	return
 }

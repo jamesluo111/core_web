@@ -5,24 +5,24 @@ import (
 	"github.com/jamesluo111/core_web/framework/gin"
 )
 
-func SubjectListController(ctx *gin.Context) error {
+func SubjectListController(ctx *gin.Context) {
 	ctx.ISetOkStatus().IJson("ok")
-	return nil
+	return
 }
 
-func SubjectDelController(ctx *gin.Context) error {
+func SubjectDelController(ctx *gin.Context) {
 	ctx.ISetOkStatus().IJson("ok")
-	return nil
+	return
 }
 
-func SubjectUpdateController(ctx *gin.Context) error {
+func SubjectUpdateController(ctx *gin.Context) {
 	ctx.ISetOkStatus().IJson("ok")
-	return nil
+	return
 }
 
-func SubjectGetController(ctx *gin.Context) error {
+func SubjectGetController(ctx *gin.Context) {
 	id, _ := ctx.DefaultParamInt64("id", 0)
 	fmt.Println(id)
 	ctx.ISetOkStatus().IJson("ok")
-	return nil
+	return
 }
