@@ -6,6 +6,7 @@ package gin
 
 import (
 	"fmt"
+	"github.com/jamesluo111/core_web/framework"
 	"html/template"
 	"net"
 	"net/http"
@@ -164,6 +165,7 @@ type Engine struct {
 	maxSections      uint16
 	trustedProxies   []string
 	trustedCIDRs     []*net.IPNet
+	container        framework.Container
 }
 
 var _ IRouter = &Engine{}
@@ -192,6 +194,7 @@ func New() *Engine {
 		RemoteIPHeaders:        []string{"X-Forwarded-For", "X-Real-IP"},
 		TrustedPlatform:        defaultPlatform,
 		UseRawPath:             false,
+		container:              framework.NewHadeContainer(),
 		RemoveExtraSlash:       false,
 		UnescapePathValues:     true,
 		MaxMultipartMemory:     defaultMultipartMemory,
@@ -228,7 +231,7 @@ func (engine *Engine) Handler() http.Handler {
 func (engine *Engine) allocateContext() *Context {
 	v := make(Params, 0, engine.maxParams)
 	skippedNodes := make([]skippedNode, 0, engine.maxSections)
-	return &Context{engine: engine, params: &v, skippedNodes: &skippedNodes}
+	return &Context{container: engine.container, engine: engine, params: &v, skippedNodes: &skippedNodes}
 }
 
 // Delims sets template left and right delims and returns an Engine instance.
