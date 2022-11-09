@@ -5,21 +5,10 @@ package gin
 
 import (
 	"context"
-	"github.com/jamesluo111/core_web/framework"
 )
 
 func (ctx *Context) BaseContext() context.Context {
 	return ctx.Request.Context()
-}
-
-// engine实现container的封装绑定
-func (engine *Engine) Bind(provider framework.ServiceProvider) error {
-	return engine.container.Bind(provider)
-}
-
-// IsBind关键字凭证是否已经绑定服务提供者
-func (engin *Engine) IsBind(key string) bool {
-	return engin.container.IsBind(key)
 }
 
 //context实现container的封装

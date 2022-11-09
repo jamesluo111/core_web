@@ -6,10 +6,7 @@ import (
 )
 
 // 具体的接口实例
-type DemoService struct {
-	// 实现接口
-	Service
-
+type Service struct {
 	// 参数
 	c framework.Container
 }
@@ -20,12 +17,19 @@ func NewDemoService(params ...interface{}) (interface{}, error) {
 
 	fmt.Println("new demo service")
 
-	return &DemoService{c: c}, nil
+	return &Service{c: c}, nil
 }
 
 // 实现接口
-func (s *DemoService) GetFoo() Foo {
-	return Foo{
-		Name: "i am foo",
+func (s *Service) GetAllStudent() []Student {
+	return []Student{
+		{
+			ID:   1,
+			Name: "foo",
+		},
+		{
+			ID:   2,
+			Name: "bar",
+		},
 	}
 }
