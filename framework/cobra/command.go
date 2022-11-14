@@ -20,6 +20,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/jamesluo111/core_web/framework"
+	"github.com/robfig/cron"
 	"io"
 	"os"
 	"path/filepath"
@@ -47,6 +48,10 @@ type Command struct {
 	//       optional, they are enclosed in brackets ([ ]).
 	// Example: add [-F file | -D dir]... [-f format] profile
 	container framework.Container
+	//Command支持cron，只在RootCommand中有这个值
+	Cron *cron.Cron
+	//对应cron命令的信息
+	CronSpecs []CronSpec
 	Use       string
 
 	// Aliases is an array of aliases that can be used instead of the first word in Use.
