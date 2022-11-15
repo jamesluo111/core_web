@@ -5,6 +5,7 @@ import (
 	"github.com/jamesluo111/core_web/framework"
 	"github.com/jamesluo111/core_web/framework/cobra"
 	"github.com/jamesluo111/core_web/framework/command"
+	"time"
 )
 
 // RunCommand  初始化根Command并运行
@@ -40,5 +41,6 @@ func RunCommand(container framework.Container) error {
 // 绑定业务的命令
 func AddAppCommand(rootCmd *cobra.Command) {
 	//  demo 例子
-	rootCmd.AddCommand(demo.InitFoo())
+	//rootCmd.AddCronCommand("* * * * * *", demo.FooCommand)
+	rootCmd.AddDistributedCronCommand("foo_func_for_test", "*/5 * * * * *", demo.FooCommand, 2*time.Second)
 }

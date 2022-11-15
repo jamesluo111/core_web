@@ -4,6 +4,8 @@ package contract
 const AppKey = "hade:app"
 
 type App interface {
+	// AppID 表示当前这个app的唯一id, 可以用于分布式锁等
+	AppID() string
 	//Version 定义当前版本
 	Version() string
 	//BaseFolder 定义项目基础地址
@@ -22,4 +24,6 @@ type App interface {
 	RuntimeFolder() string
 	//TestFolder 存放测试所需要的信息
 	TestFolder() string
+	// HttpFolder 存放的文件
+	HttpFolder() string
 }

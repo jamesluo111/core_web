@@ -7,7 +7,7 @@ import (
 
 // InitFoo 初始化Foo命令
 func InitFoo() *cobra.Command {
-	FooCommand.AddCommand(Foo1Command)
+	FooCommand.AddCronCommand("* * * * * *", Foo1Command)
 	return FooCommand
 }
 
@@ -19,8 +19,7 @@ var FooCommand = &cobra.Command{
 	Aliases: []string{"fo", "f"},
 	Example: "foo命令的例子",
 	RunE: func(c *cobra.Command, args []string) error {
-		container := c.GetContainer()
-		log.Println(container)
+		log.Println("execute foo command")
 		return nil
 	},
 }
@@ -33,8 +32,7 @@ var Foo1Command = &cobra.Command{
 	Aliases: []string{"fo1", "f1"},
 	Example: "foo1命令的例子",
 	RunE: func(c *cobra.Command, args []string) error {
-		container := c.GetContainer()
-		log.Println(container)
+		log.Println("execute foo command")
 		return nil
 	},
 }

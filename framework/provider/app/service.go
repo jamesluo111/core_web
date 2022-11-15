@@ -3,6 +3,7 @@ package app
 import (
 	"errors"
 	"flag"
+	"github.com/google/uuid"
 	"github.com/jamesluo111/core_web/framework"
 	"github.com/jamesluo111/core_web/framework/util"
 	"path/filepath"
@@ -11,6 +12,7 @@ import (
 type HadeApp struct {
 	container  framework.Container //服务容器
 	baseFolder string              //基础路径
+	appId      string
 }
 
 // NewHadeApp 初始化HadeApp
@@ -22,10 +24,11 @@ func NewHadeApp(params ...interface{}) (interface{}, error) {
 	// 有两个参数，一个是容器，一个是baseFolder
 	container := params[0].(framework.Container)
 	baseFolder := params[1].(string)
-	return &HadeApp{baseFolder: baseFolder, container: container}, nil
+	appId := uuid.New().String()
+	return &HadeApp{baseFolder: baseFolder, container: container, appId: appId}, nil
 }
 
-//获取基础地址
+// 获取基础地址
 func (h *HadeApp) BaseFolder() string {
 	if h.baseFolder != "" {
 		return h.baseFolder
@@ -40,9 +43,13 @@ func (h *HadeApp) BaseFolder() string {
 	return util.GetExecDirectory()
 }
 
-//获取日志存放目录
+func (h *HadeApp) AppID() string {
+	return h.appId
+}
+
+// 获取日志存放目录
 func (h *HadeApp) LogFolder() string {
-	return filepath.Join(h.baseFolder, "log")
+	return filepath.Join(h.StorageFolder(), "log")
 }
 
 func (h *HadeApp) StorageFolder() string {
@@ -74,7 +81,7 @@ func (h *HadeApp) CommandFolder() string {
 }
 
 func (h *HadeApp) RuntimeFolder() string {
-	return filepath.Join(h.baseFolder, "runtime")
+	return filepath.Join(h.StorageFolder(), "", "runtime")
 }
 
 func (h *HadeApp) TestFolder() string {

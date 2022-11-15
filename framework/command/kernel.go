@@ -5,6 +5,7 @@ import "github.com/jamesluo111/core_web/framework/cobra"
 // AddKernelCommands will add all command/* to root command
 func AddKernelCommands(root *cobra.Command) {
 	root.AddCommand(DemoCommand)
+	root.AddCommand(initCronCommand())
 
 	//root.AddCommand(envCommand)
 	//root.AddCommand(deployCommand)
