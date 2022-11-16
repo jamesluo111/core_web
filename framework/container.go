@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-//Container是一个服务容器,提供绑定和获取服务的功能
+// Container是一个服务容器,提供绑定和获取服务的功能
 type Container interface {
 	// Bind绑定一个服务提供者,如果关键字凭证已经存在,会进行替换操作,返回error
 	Bind(provider ServiceProvider) error
@@ -23,7 +23,7 @@ type Container interface {
 	MakeNew(key string, params []interface{}) (interface{}, error)
 }
 
-//HadeContainer是服务容器的具体实现
+// HadeContainer是服务容器的具体实现
 type HadeContainer struct {
 	Container //强制要求HadeContainer实现Container接口
 	// providers 储存注册的服务提供者, key为字符串凭证
@@ -42,10 +42,9 @@ func NewHadeContainer() *HadeContainer {
 	}
 }
 
-//将服务容器和关键字进行绑定
+// 将服务容器和关键字进行绑定
 func (hade *HadeContainer) Bind(provider ServiceProvider) error {
-	hade.lock.Lock()
-	defer hade.lock.Unlock()
+
 	key := provider.Name()
 	hade.providers[key] = provider
 
@@ -61,7 +60,9 @@ func (hade *HadeContainer) Bind(provider ServiceProvider) error {
 		if err != nil {
 			return errors.New(err.Error())
 		}
+		hade.lock.Lock()
 		hade.instances[key] = instance
+		hade.lock.Unlock()
 	}
 	return nil
 }
@@ -83,12 +84,12 @@ func (hade *HadeContainer) MustMake(key string) interface{} {
 	return seve
 }
 
-//MakeNew 方式使用的内部的make初始化
+// MakeNew 方式使用的内部的make初始化
 func (hade *HadeContainer) MakeNew(key string, params []interface{}) (interface{}, error) {
 	return hade.make(key, params, true)
 }
 
-//真正的实例化一个服务
+// 真正的实例化一个服务
 func (hade *HadeContainer) make(key string, params []interface{}, foreNew bool) (interface{}, error) {
 	hade.lock.RLock()
 	defer hade.lock.RLock()

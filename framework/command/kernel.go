@@ -6,6 +6,7 @@ import "github.com/jamesluo111/core_web/framework/cobra"
 func AddKernelCommands(root *cobra.Command) {
 	root.AddCommand(DemoCommand)
 	root.AddCommand(initCronCommand())
+	root.AddCommand(InitEnvCommand())
 
 	//root.AddCommand(envCommand)
 	//root.AddCommand(deployCommand)
