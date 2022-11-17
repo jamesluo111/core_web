@@ -16,9 +16,9 @@ type Env interface {
 	// AppEnv 获取当前环境
 	AppEnv() string
 	// IsExist 判断一个环境变量是否有被设置
-	IsExist() bool
-	// Get 获取某个环境变量, 如果没有返回""
-	Get() string
+	IsExist(key string) bool
+	// Get 获取某个环境变量, 如果没有返回
+	Get(key string) string
 	// All 获取所有环境变量 .env 和运行环境变量融合后结果
 	All() map[string]string
 }

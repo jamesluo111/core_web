@@ -92,7 +92,7 @@ func (hade *HadeContainer) MakeNew(key string, params []interface{}) (interface{
 // 真正的实例化一个服务
 func (hade *HadeContainer) make(key string, params []interface{}, foreNew bool) (interface{}, error) {
 	hade.lock.RLock()
-	defer hade.lock.RLock()
+	defer hade.lock.RUnlock()
 
 	//查询是否已注册过这个服务提供者,如果没有注册，则返回错误
 	sp := hade.findServiceProvider(key)
@@ -100,12 +100,12 @@ func (hade *HadeContainer) make(key string, params []interface{}, foreNew bool) 
 		return nil, errors.New("contract " + key + " have not register")
 	}
 
-	if foreNew {
-		return hade.newInstance(sp, params)
-	}
-
 	if ins, ok := hade.instances[key]; ok {
 		return ins, nil
+	}
+
+	if foreNew {
+		return hade.newInstance(sp, params)
 	}
 
 	//容器中若还未实例化,则进行实例化
